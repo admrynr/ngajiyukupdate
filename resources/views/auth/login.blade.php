@@ -11,6 +11,12 @@
                         <a href="index" class="logo logo-admin"><img src="{{url('/')}}/assets/images/logo.png" height="30" alt="logo"></a>
                     </h3>
 
+                    @if (Session::has('message'))
+                    <div class="alert alert-warning" role="alert">
+                        {!! Session::get('message') !!}
+                    </div>
+                    @endif
+
                     <div class="p-3">
                         <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
                         <p class="text-muted text-center">Sign in to continue to POS Sample</p>
