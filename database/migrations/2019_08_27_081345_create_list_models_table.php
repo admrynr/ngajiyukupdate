@@ -13,7 +13,7 @@ class CreateListModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('product_type_id');
             $table->string('product_name');
