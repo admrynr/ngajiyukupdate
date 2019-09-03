@@ -33,8 +33,8 @@
         <td>{{ $u->name }}</td>
         <td>{{ $u->email }}</td>
         <td>
-            @if ($u->level == 1)
-            <a href="#" class="badge badge-light">Verified</a>
+            @if ($u->is_verified == '1')
+            <a href="" class="badge badge-light">Verified</a>
             @else
             <a href="/verify/{{$u->id}}" class="badge badge-warning">Verify</a>
             @endif

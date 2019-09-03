@@ -15,14 +15,16 @@ class AuthenticateUserController extends Controller
     public function index()
     {
         $user = User::all()->where('level','2');
-
+        //dd($user);
         return view ('authuser', ['user' => $user]);
     }
 
     public function verify($id)
     {
         $user = User::find($id);
-
         $user->is_verified = '1';
+        $user->save();
+
+        return redirect ('/authuser');
     }
 }

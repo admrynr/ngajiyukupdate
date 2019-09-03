@@ -43,7 +43,6 @@ class LoginController extends Controller
 
         if (Auth::attempt(['email'=>$email, 'password'=>$password, 'is_verified'=>'1'])) {
             // Authentication passed...
-            $request->session()->regenerate();
             return redirect()->intended('home');
         }else{
             return redirect()->intended('unverified');
