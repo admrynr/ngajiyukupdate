@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListModelsTable extends Migration
+class CreateTransactionDetail extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateListModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product', function (Blueprint $table) {
+        Schema::create('transaction_detail', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('product_type_id');
-            $table->string('product_name');
-            $table->integer('base_price');
-            $table->integer('final_price');
-            $table->integer('stock');
-            $table->string('image')->default('default.png');
+            $table->integer('transaction_id');
+            $table->integer('product_id');
+            $table->integer('qty');
+            $table->integer('total_price');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +31,6 @@ class CreateListModelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('list_models');
+        Schema::dropIfExists('transaction_detail');
     }
 }
