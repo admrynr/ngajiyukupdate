@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateListModelsTable extends Migration
+class CreateTableProductType extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateListModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product_type', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('product_type_id');
-            $table->string('product_name');
-            $table->integer('base_price');
-            $table->integer('final_price');
-            $table->integer('stock');
-            $table->string('image')->default('default.png');
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +28,6 @@ class CreateListModelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('list_models');
+        Schema::dropIfExists('product_type');
     }
 }
