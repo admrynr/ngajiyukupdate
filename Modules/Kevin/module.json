@@ -1,0 +1,14 @@
+{
+    "name": "Kevin",
+    "alias": "kevin",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Kevin\\Providers\\KevinServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

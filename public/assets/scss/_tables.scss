@@ -134,14 +134,14 @@ table.focus-on {
     }
   }
   .sticky-table-header.fixed-solution {
-    top: 239px !important;
+    top: 70px !important;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .table-rep-plugin { 
-    .sticky-table-header.fixed-solution {
-      top: 130px !important;
+    .sticky-table-header {
+      top: 145px !important;
     }
   }
 }

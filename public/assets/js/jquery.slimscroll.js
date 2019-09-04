@@ -19,7 +19,7 @@
         height : '250px',
 
         // width in pixels of the scrollbar and rail
-        size : '7px',
+        size : '12px',
 
         // scrollbar color, accepts any hex/color value
         color: '#000',

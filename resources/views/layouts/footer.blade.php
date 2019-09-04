@@ -1,11 +1,3 @@
-        <!-- Footer -->
         <footer class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        © {{date('Y')}} Lexa<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Vantura ID</span>.
-                    </div>
-                </div>
-            </div>
+        © {{date('Y')}} Maersk Tracking Panel <span class="d-none d-sm-inline-block"> - Vantura Digital Agensi</span>.
         </footer>
-        <!-- End Footer -->
