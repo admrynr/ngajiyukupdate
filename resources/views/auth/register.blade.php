@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="m-t-40 text-center">
-            <p>Already have an account ? <a href="pages-login" class="font-500 font-14 text-primary font-secondary"> Login </a> </p>
+            <p>Already have an account ? <a href="{{route('login')}}" class="font-500 font-14 text-primary font-secondary"> Login </a> </p>
             <p>© 2018 Lexa. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
         </div>
     </div>

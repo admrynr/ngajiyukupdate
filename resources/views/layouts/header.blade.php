@@ -142,24 +142,31 @@
                         <ul class="navigation-menu">
 
                             <li class="has-submenu">
-                                <a href="index">
+                                <a href="{{route('home')}}">
                                     <i class="ti-dashboard"></i>
                                     <span>Dashboard</span>
                                 </a>
                             </li>
 
-                            
+                            @switch (Auth::user()->level)
+                                @case('1')
+                                <li class="has-submenu">
+                                    <a href="{{route('authuser')}}"><i class="ti-user"></i>Authenticate User</a>
+                                </li>
+                                @break
 
-                            <li class="has-submenu">
-                                <a href="{{route('list')}}"><i class="ti-receipt"></i>Manage Products</a>
-                            </li>
+                                @case('2')
+                                <li class="has-submenu">
+                                    <a href="{{route('list')}}"><i class="ti-receipt"></i>Manage Products</a>
+                                </li>
+                                @break
 
-                            @if (Auth::user()->level == '1')
-                            <li class="has-submenu">
-                                <a href="{{route('authuser')}}"><i class="ti-receipt"></i>Authenticate User</a>
-                            </li>
-                            @endif
-
+                                @case('3')
+                                <li class="has-submenu">
+                                    <a href="{{route('')}}"><i class="ti-wallet"></i>Cashier Menu</a>
+                                </li>
+                                @break
+                            @endswitch
                             
                         </ul>
                         <!-- End navigation menu -->

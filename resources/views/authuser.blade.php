@@ -32,7 +32,7 @@
     <tr>
       <td>{{ $u->name }}</td>
       <td>{{ $u->email }}</td>
-      <td>
+      <td class="rowverif">
           @if ($u->is_verified == '1')
           <a  class="badge badge-light">Verified</a>
           @else
@@ -56,7 +56,7 @@
                 <h6>Verify <span id="namecustomer"></span> ?</h6>
             </div>
             <div class="modal-footer">
-              <a href="" id="btncustomer" class="btn btn-primary">OK</a>
+              <a href="#" id="btncustomer" class="btn btn-primary" data-dismiss="modal">OK</a>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div><!-- /.modal-content -->
