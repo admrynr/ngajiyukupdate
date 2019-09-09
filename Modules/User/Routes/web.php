@@ -16,7 +16,11 @@ Route::prefix('user')->middleware('auth')->group(function() {
     Route::get('data', 'UserController@data')->name('user.data');
     Route::post('store', 'UserController@store')->name('user.store');
     Route::get('edit/{id}', 'UserController@edit')->name('user.edit');
+    Route::get('approve/{id}', 'UserController@approve')->name('user.approve');
+    Route::get('decline/{id}', 'UserController@decline')->name('user.decline');
     Route::post('update/{id}', 'UserController@update')->name('user.update');
     Route::get('destroy/{id}', 'UserController@destroy')->name('user.destroy');
     Route::get('info', 'UserController@info')->name('user.info');
+    Route::get('setCashier/{id}', 'UserController@setCashier')->name('user.setCashier');
+    Route::get('setRegular/{id}', 'UserController@setRegular')->name('user.setRegular');
 });

@@ -71,13 +71,13 @@
                         <li class="dropdown notification-list">
                             <div class="dropdown notification-list nav-pro-img">
                                 <a class="dropdown-toggle nav-link arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <img src="{{ Auth::user()->image == null ? asset('image/default-user.png') : env('MEDIA_URL').Auth::user()->image }}" alt="user" class="rounded-circle"> <b style="margin-left: 5px"> Hello, {{Auth::user()->username}} </b>
+                                <img src="{{ Auth::user()->image == null ? asset('images/default-user.png') : env('MEDIA_URL').Auth::user()->image }}" alt="user" class="rounded-circle"> <b style="margin-left: 5px"> Hello, {{Auth::user()->name}} </b>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                     <!-- item-->
                                 <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal"><i class="mdi mdi-power text-danger"></i> Logout</a>
+                                    <a class="dropdown-item text-danger" id="log-out" href="#" ><i class="mdi mdi-power text-danger"></i> Logout</a>
                                 </div>                                                                    
                             </div>
                         </li>

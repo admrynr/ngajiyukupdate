@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -21,7 +19,12 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    //use AuthenticatesUsers;
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
 
     public function logout(Request $request)
     {
@@ -34,19 +37,25 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
     public function authenticate(Request $request)
     {
-        $email = $request->email;
-        $password = $request->password;
+        $data = $request->validate([
+            'email' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
 
-        if (Auth::attempt(['email'=>$email, 'password'=>$password, 'is_verified'=>'1'])) {
+        if (Auth::attempt(['email'=>$data['email'], 'password'=>$data['password'], 'is_verified'=>'1'])) {
             // Authentication passed...
-            return redirect()->intended('home');
+            if (Auth::user()->level==1){
+            return redirect()->route('user.index');
+            }else if (Auth::user()->level==3){
+                return redirect()->route('cashier.index');
+            }
         }else{
-            return redirect()->intended('unverified');
+            return redirect('/unverified');
         }
+        
     }
 
     public function unverify()
@@ -55,11 +64,6 @@ class LoginController extends Controller
             return view('Auth.login'); 
     }
 
-    public function regsuccess()
-    {
-        Session::flash('message', 'Registration succeeded! Wait until your account is verified before you can login.');
-            return view('Auth.login');
-    }
     /**
      * Create a new controller instance.
      *
@@ -67,6 +71,6 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        //$this->middleware('guest')->except('logout');
     }
 }

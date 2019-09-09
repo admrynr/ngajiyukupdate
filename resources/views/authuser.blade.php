@@ -20,7 +20,7 @@
 
 <!--Table-->
 <div>
-  <table class="table table-hover table-borderless table-striped">
+  <table class="table table-hover table-borderless table-striped tabled">
     <thead class="thead-dark">
     <tr>
       <th>Nama User</th>
@@ -32,9 +32,9 @@
     <tr>
       <td>{{ $u->name }}</td>
       <td>{{ $u->email }}</td>
-      <td class="rowverif">
+      <td >
           @if ($u->is_verified == '1')
-          <a  class="badge badge-light">Verified</a>
+          <a  class="badge badge-light rowverif">Verified</a>
           @else
           <a data-id="{{$u->id}}" data-name="{{$u->name}}" data-toggle="modal" data-target="#confirmModal" href="#" class="badge badge-warning verify">Verify</a>
           @endif

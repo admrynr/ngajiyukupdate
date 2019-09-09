@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
-
+Route::get('/', '\Modules\User\Http\Controllers\UserController@index')->name('home')->middleware('auth');
+Route::get('/index', 'HomeController@index')->name('index');
 
 Route::get('main', 'DefaultController@index');
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -28,11 +28,12 @@ Route::get('/list/hapus/{id}', 'ListModelController@delete')->name('hapus');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::post('/logout', 'LoginController@logout')->name('logout');
 
-Route::get('/unverified', 'Auth\LoginController@unverify')->name('unverified');
-Route::get('/login/regsuccess', 'Auth\LoginController@regsuccess')->name('regsuccess');
-Route::post('/login', 'Auth\LoginController@authenticate')->name('login');
+Route::get('/unverified', 'LoginController@unverify')->name('unverified');
+Route::get('/login/regsuccess', 'LoginController@regsuccess')->name('regsuccess');
+Route::get('/login', 'LoginController@showLoginForm')->name('login');
+Route::post('/login/authenticate', 'loginController@authenticate')->name('authenticate');
 
 Route::get('/register', 'RegController@index')->name('register');
 Route::post('/register/store', 'RegController@register')->name('store');

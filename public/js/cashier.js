@@ -1,21 +1,21 @@
 
-var appuser = {
+var appcashier = {
     handleUserPage : function(){
-        user.handleTable();
-		user.handleModalShow();
-		user.handleModalClose();
-		user.handleLogout();
-		user.handlePostData();
-		user.handleEditData();
-		user.handleDeleteData();
-		user.handleApproveData();
-		user.handleSetCashier();
-		user.handleSetRegular();
-		user.handleDeclineData();
+        cashier.handleTable();
+		cashier.handleModalShow();
+		cashier.handleModalClose();
+		cashier.handleLogout();
+		cashier.handlePostData();
+		cashier.handleEditData();
+		cashier.handleDeleteData();
+		cashier.handleApproveData();
+		cashier.handleSetCashier();
+		cashier.handleSetRegular();
+		cashier.handleDeclineData();
     },
 };
 
-var user = {
+var cashier = {
 	handleTable : function(){
 		$('#dataTable').DataTable({
 			processing: true,
@@ -23,7 +23,7 @@ var user = {
 			destroy: true,
 			// ajax: '/roles/data',
 			ajax: {
-                url: baseURL+"/user/data",
+                url: baseURL+"/cashier/data",
                 method: 'GET',
             },
 			columns: [
@@ -37,66 +37,20 @@ var user = {
 						return meta.row + meta.settings._iDisplayStart + 1;
 					}
 				},
-				{ data: 'name', name: 'name' },
-				{ data: 'email', name: 'email' },
-                { data: null, name: 'is_verified',render:function(data){
-					if(data.is_verified == 1){
-						var status = '<b class="text-success">VERIFIED</b>';
-					}else{
-						var status = '<b class="text-danger">UNVERIFIED</b>'
-					}return status;
-					}
-				},
+				{ data: 'product', name: 'product_name' },
+                { data: 'base_price', name: 'base_price' },
+                { data: 'final_price', name: 'final_price' },
+                { data: 'stock', name: 'stock' },
+                { data: 'image', name: 'image' },
 				{
 					data: null,
 					orderable: false,
 					className: "text-center",
 					searchable: false,
 					render: function(data, type, row){
-						if(data.level == 2){
-							var subbutton = "<a data-toggle='modal' data-target='#cashierModal'><button type='button' data-url='"+baseURL+"/user/setCashier/"+data.id+"' class='btn dotip btn-primary btn-outline btn-circle m-r-5 btn-set-cashier' data-toggle='tooltip' title='Set As Cashier'>"
+							var button = "<a data-toggle='modal' data-target='#cashierModal'><button type='button' data-url='"+baseURL+"/user/setCashier/"+data.id+"' class='btn dotip btn-warning btn-outline btn-circle m-r-5 btn-set-cashier' data-toggle='tooltip' title='Set As Cashier'>"
 							+"<i class='ti-money'></i>"
 						+"</button>";
-						}else if(data.level == 3){
-							$('#role').val('Regular User');
-							$('#user').val(data.name);
-							var subbutton = "<a data-toggle='modal' data-target='#cashierModal'><button type='button' data-url='"+baseURL+"/user/setRegular/"+data.id+"' class='btn dotip btn-secondary btn-outline btn-circle m-r-5 btn-set-regular' data-toggle='tooltip' title='Set As Regular User'>"
-							+"<i class='ti-shopping-cart'></i>"
-							+"</button>";
-						}else {
-							var subbutton = "<a ><button type='button'  class='btn dotip btn-light btn-outline btn-circle m-r-5 btn-activate-data' data-toggle='tooltip' disabled title='Super Admin'>"
-							+"<i class='ti-user'></i>"
-							+"</button>";
-						}
-						if(data.is_verified == 0){
-						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit User'>"
-										+"<i class='ti-pencil-alt'></i>"
-									+"</button>"
-									+subbutton
-									+"<a data-toggle='modal' data-target='#approveModal'><button type='button' data-url='"+baseURL+"/user/approve/"+data.id+"' class='btn dotip btn-info btn-outline btn-circle m-r-5 btn-activate-data' data-toggle='tooltip' title='Approve User'>"
-										+"<i class='ti-check'></i>"
-									+"</button>"
-									// +"<button type='button' data-id='"+data.id+"' class='btn btn-info btn-outline btn-circle btn-sm m-r-5 btn-show-permission' data-toggle='tooltip' title='Show Permission'>"
-									//	+"<i class='fa fa-certificate'></i>"
-									// +"</button>"
-									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/user/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete User'>"
-										+"<i class='ti-trash'></i>"
-									+"</button></a>";
-						} else {
-						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit User'>"
-										+"<i class='ti-pencil-alt'></i>"
-									+"</button>"
-									+subbutton
-									+"<a data-toggle='modal' data-target='#declineModal'><button type='button' data-url='"+baseURL+"/user/decline/"+data.id+"' class='btn dotip btn-warning btn-outline btn-circle m-r-5 btn-decline-data' data-toggle='tooltip' title='Deactivate User'>"
-										+"<i class='ti-close'></i>"
-									+"</button>"
-									// +"<button type='button' data-id='"+data.id+"' class='btn btn-info btn-outline btn-circle btn-sm m-r-5 btn-show-permission' data-toggle='tooltip' title='Show Permission'>"
-									//	+"<i class='fa fa-certificate'></i>"
-									// +"</button>"
-									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/user/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete User'>"
-										+"<i class='ti-trash'></i>"
-									+"</button></a>";
-						}
 						return button;
 					}
 				}

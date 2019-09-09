@@ -31,38 +31,61 @@ class UserController extends Controller
         return datatables::of($user)->make(true);
     }
 
-    public function create()
+    public function setCashier($id)
     {
+        $model = User::findOrFail($id);
+        $model->level = 3;
+
+        if(!$model->update()){
+            $data = [
+                'status' => 2,
+                'message' => 'Fail Approve Data'
+            ];
+        }else{
+            $data = [
+                'status' => 1,
+                'message' => 'Success Approve Data'
+            ];
+        }
+
+        return json_encode($data);
+
+    }
+
+    public function setRegular($id)
+    {
+        $model = User::findOrFail($id);
+        $model->level = 2;
+
+        if(!$model->update()){
+            $data = [
+                'status' => 2,
+                'message' => 'Fail Approve Data'
+            ];
+        }else{
+            $data = [
+                'status' => 1,
+                'message' => 'Success Approve Data'
+            ];
+        }
+
+        return json_encode($data);
 
     }
 
     //store data
     public function store(Request $request)
     {
-        $status = 0;
-        $mix_pass = '123';
-        $first_password = $request->username . $mix_pass;
-        $image = NULL;
 
         $user = new User();
-        $user->username = $request->username;
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->level = 2;
         //
-        $user->image = $request->$image;
-        $user->password = \Hash::make($first_password);
-        $user->is_verified = $status;
+        $user->password = \Hash::make($request->password);
+        $user->is_verified = 0;
 
         $user->save();
-
-        if(!empty($request->role)){
-            foreach($request->role as $key){
-                $userRole = new UserRole();
-                $userRole->user_id = $user->id;
-                $userRole->role_id = $key;
-                $userRole->save();
-            }     
-        }
         
         $data = [
             'status' => 1,
@@ -75,7 +98,7 @@ class UserController extends Controller
     //get data for Edit
     public function edit($id, Request $request)
     {
-        $data = User::where('id', $id)->with('user_role')->first();
+        $data = User::where('id', $id)->first();
 
         return json_encode($data);
     }
@@ -83,13 +106,11 @@ class UserController extends Controller
     //update data
     public function update($id, Request $request)
     {
-        $user_role = UserRole::where('user_id', $id);
-        $user_role->delete();
         
         $user = User::findOrFail($id);
-        $user->username = $request->username;
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->password = $request->password;
 
         if(!$user->update()){
             $data = [
@@ -103,14 +124,6 @@ class UserController extends Controller
             ];
         }
 
-        if(!empty($request->role)){
-            foreach($request->role as $key){
-                $userRole = new UserRole();
-                $userRole->user_id = $user->id;
-                $userRole->role_id = $key;
-                $userRole->save();
-            }     
-        }
 
         return json_encode($data);
 
@@ -162,8 +175,7 @@ class UserController extends Controller
     public function destroy($id, Request $request)
     {
         $user = User::where('id', $id);
-        $userRole = UserRole::where('user_id', $id);
-        $userRole->delete();
+        $user->delete();
 
         if(!$user->delete()){
             $data = [

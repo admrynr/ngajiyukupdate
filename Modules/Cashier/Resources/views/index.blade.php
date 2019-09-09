@@ -63,10 +63,12 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Product Name</th>
+                            <th>Base Price</th>
+                            <th>Final Price</th>
+                            <th>Stock</th>
+                            <th>Image</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,10 +88,10 @@
 @endsection
 
 @section('script-bottom')
-        <script type="text/javascript" src="{{ asset("js/user.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("js/cashier.js") }}"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                appuser.handleUserPage();
+                appcashier.handleUserPage();
                 jQuery('#effective_date').datepicker({
                     autoclose: true,
                     todayHighlight: true

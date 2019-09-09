@@ -8,7 +8,7 @@
                 <div class="card-body">
 
                     <h3 class="text-center m-0">
-                        <a href="index" class="logo logo-admin"><img src="{{url('/')}}/assets/images/logo.png" height="30" alt="logo"></a>
+                        <a href="index" class="logo logo-admin"><img src="{{ URL::asset('images/logosenja.jpeg') }}" height="60" alt="logo"></a>
                     </h3>
 
                     @if (Session::has('message'))
@@ -18,38 +18,32 @@
                     @endif
 
                     <div class="p-3">
-                        <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
-                        <p class="text-muted text-center">Sign in to continue to POS Sample</p>
+                        <h5 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h5>
+                        <p class="text-muted text-center">Please Sign In to Continue</p>
 
-                    <form method="POST" class="form-horizontal m-t-30" action="{{ route('login') }}">
+                    <form method="POST" class="form-horizontal m-t-30" action="{{ route('authenticate') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
 
-                                @error('email')
+                                @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @enderror
-                            </div>
+                                @endif
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
 
-                                @error('password')
+                                @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @enderror
-                            </div>
+                                @endif
                         </div>
 
                         <div class="form-group row m-t-20">
@@ -60,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 text-right">
-                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
+                                <button class="btn btn-dark w-md waves-effect waves-light" type="submit">Log In</button>
                             </div>
                         </div>
 
@@ -76,7 +70,6 @@
         </div>
 
     <div class="m-t-40 text-center">
-                <p>Don't have an account ? <a href="{{route('register')}}" class="font-500 font-14 text-primary font-secondary"> Signup Now </a> </p>
                 <p>© {{date('Y')}} Lexa. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
             </div>
 

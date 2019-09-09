@@ -10,7 +10,7 @@
 <body>
         <div class="preloader" id="loaders">
             <div class="circular">
-                <img class="text-center" src="{{ asset('image/loader.gif') }}" style="margin-bottom:-10px">
+                <img class="text-center" src="{{ asset('images/loader.gif') }}" style="margin-bottom:-10px">
             <h5>Processing data, please wait ...</h5>
             </div>
         </div>

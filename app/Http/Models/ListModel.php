@@ -10,7 +10,7 @@ class ListModel extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'product_name', 'price', 'stock', 'image'
+        'product_name', 'base_price', 'stock', 'image', 'product_type_id', 'final_price'
     ];
 
     use SoftDeletes;
