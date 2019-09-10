@@ -39,10 +39,10 @@
                                 <h4 class="header-title">{{ $title }} List</h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <a href="{{ route('user.index') }}" class="btn {{ empty(Request::get('filter')) ? 'btn-primary' : 'btn-secondary' }} text-white">All (<span id="total"></span>)</a>
-                                <a href="{{ route('user.index') }}?filter=active"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'active' ? 'btn-primary' : 'btn-secondary' }} text-white">Active (<span id="active"></span>)</a>
-                                <a href="{{ route('user.index') }}?filter=deactive"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'deactive' ? 'btn-primary' : 'btn-secondary' }} text-white">Deactive (<span id="deactive"></span>)</a>
-                                <a href="{{ route('user.index') }}?filter=trashed"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'trashed' ? 'btn-primary' : 'btn-secondary' }} text-white">Trashed (<span id="trashed"></span>)</a>
+                                <a href="{{ route('product.index') }}" class="btn {{ empty(Request::get('filter')) ? 'btn-primary' : 'btn-secondary' }} text-white">All (<span id="total"></span>)</a>
+                                <a href="{{ route('product.index') }}?filter=active"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'active' ? 'btn-primary' : 'btn-secondary' }} text-white">Active (<span id="active"></span>)</a>
+                                <a href="{{ route('product.index') }}?filter=deactive"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'deactive' ? 'btn-primary' : 'btn-secondary' }} text-white">Deactive (<span id="deactive"></span>)</a>
+                                <a href="{{ route('product.index') }}?filter=trashed"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'trashed' ? 'btn-primary' : 'btn-secondary' }} text-white">Trashed (<span id="trashed"></span>)</a>
                                 <input type="hidden" id="filter" value="{{ empty(Request::get('filter')) ? 'all' : Request::get('filter') }}">
                             </div>
                             </div>
@@ -90,16 +90,19 @@
                     @else
                         <input type="hidden" id="selectsekolah" value="{{ Session::get('user')->sekolah_id }}">
                     @endif --}}
-                    <table id="dataTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <table id="dataTableProduct" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
                             <th></th>
                             <th>No.</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Level</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Base Price</th>
+                            <th>Final Price</th>
+                            <th>Stock</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,14 +118,12 @@
 </div> <!-- end container-fluid -->
 @endsection
 @section('data-content')
-    @include('user::form.user')
-@endsection
-@section('data-edit-content')
-    @include('user::form.edit')
+    @include('product::form.product')
 @endsection
 
+
 @section('script-bottom')
-        <script type="text/javascript" src="{{ asset("js/user.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("js/product.js") }}"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 appuser.handleUserPage($('#filter').val());

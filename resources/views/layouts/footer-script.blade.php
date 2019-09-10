@@ -1,7 +1,7 @@
         <!-- jQuery  -->
         <script src="{{ URL::asset('assets/js/jquery.min.js')}}"></script>
         <script src="{{ URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script>
-        <script src="{{ URL::asset('assets/js/metisMenu.min.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/metismenu"></script>        
         <script src="{{ URL::asset('assets/js/jquery.slimscroll.js')}}"></script>
         <script src="{{ URL::asset('assets/js/waves.min.js')}}"></script>
 
@@ -13,6 +13,7 @@
         <!-- Buttons examples -->
         <script src="{{ URL::asset('assets/plugins/datatables/dataTables.buttons.min.js')}}"></script>
         <script src="{{ URL::asset('assets/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
+        <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js"></script>
         <script src="{{ URL::asset('assets/plugins/datatables/jszip.min.js')}}"></script>
         <script src="{{ URL::asset('assets/plugins/datatables/pdfmake.min.js')}}"></script>
         <script src="{{ URL::asset('assets/plugins/datatables/vfs_fonts.js')}}"></script>

@@ -32,6 +32,18 @@
     </div>
 </div>
 
+<div class="modal fade dataEditModal" id="dataEditModal" tabindex="-1" role="dialog" aria-labelledby="addOrder" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0"></h5> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                @yield('data-edit-content')
+            </div>
+        </div>
+    </div>
+
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="addOrder" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -122,5 +134,23 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="bulkModal" tabindex="-1" role="dialog" aria-labelledby="addOrder" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0">Bulk Data</h5> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to <span id="bulk-title"></span> this datas ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-bulk" class="btn btn-success waves-effect waves-light">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
                                     

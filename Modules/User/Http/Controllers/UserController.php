@@ -26,8 +26,15 @@ class UserController extends Controller
     //get data fot DataTable
     public function data(Request $request)
     {
-        $user = User::get();
-        
+        if ($request->filter == 'all')
+        $user = User::where('level', '!=',1)->get();
+        else if($request->filter == 'active')
+        $user = User::where('level', '!=',1)->where('is_verified',1)->get();
+        else if($request->filter == 'deactive')
+        $user = User::where('level', '!=',1)->where('is_verified',0)->get();
+        else
+        $user = User::onlyTrashed()->where('level', '!=',1)->get();
+
         return datatables::of($user)->make(true);
     }
 
@@ -192,27 +199,48 @@ class UserController extends Controller
         return json_encode($data);
     }
 
+    //bulk data
+    public function bulk($data, Request $request)
+    {
+        $datas = explode(',',$request->id);
+        foreach($datas as $key){
+            if($data == 'trash')
+            $bulk = User::where('id',$key)->delete();
+            else if($data == 'activate')
+            $bulk = User::where('id',$key)->update(['is_verified'=>1]);
+            else if($data == 'deactivate')
+            $bulk = User::where('id',$key)->update(['is_verified' => 0]);
+            else if($data == 'restore')
+            $bulk = User::where('id',$key)->restore();
+            else 
+            $bulk = User::where('id',$key)->forcedelete();
+        }
+        
+        $data = [
+            'status' => 1,
+            'message' => 'Success Update Data'
+        ];
+
+        return json_encode($data);
+    }
+
     //get info data
     public function info(Request $request)
     {
-        $model = User::get();
+        $model = User::where('level', '!=',1)->get();
 
-        $verified = 0;
-        $unverified = 0;
-        $total = 0;
-        foreach($model as $key){
-            if($key->status){
-                ++$verified;
-            }else{
-                ++$unverified;
-            }
-        }
+        $active = User::where('level', '!=',1)->where('is_verified',1)->count();
+        $deactive = User::where('level', '!=',1)->where('is_verified',0)->count();;
+        $total = $model->count();
+        $trashed = User::onlyTrashed()->where('level', '!=',1)->count();
 
         $info = [
-            'totalverified' => $verified,
-            'totalunverified' => $unverified,
-            'total' => $verified+$unverified
+            'total' => $total,
+            'active' => $active,
+            'deactive' => $deactive,
+            'trashed' => $trashed
         ];
+
         return json_encode($info);
     }
 
@@ -311,4 +339,5 @@ class UserController extends Controller
         ];
         return redirect()->route('profil.index');
     }
+
 }

@@ -12,13 +12,19 @@
                                     <i class="mdi mdi-view-dashboard"></i> <span> Dashboard </span>
                                 </a>
                             </li>
-                            <li class="menu-title">Operational</li>
+                            <li class="menu-title">User Management</li>
                             @if(Auth::user()->level == 1)
                             <li>
                             <a href="{{ route('user.index') }}" class="waves-effect">
                                     <i class="mdi mdi-account-multiple"></i><span> User </span>
-                                </a>
+                            </a>
                             </li>
+                            <li class="menu-title">Product Management</li>
+                            <li>
+                                    <a href="{{ route('product.index') }}" class="waves-effect">
+                                            <i class="mdi mdi-account-multiple"></i><span> Product </span>
+                                    </a>
+                                    </li>
                             @elseif(Auth::user()->level == 3)
                             <li>
                                 <a href="{{ route('cashier.index') }}" class="waves-effect">

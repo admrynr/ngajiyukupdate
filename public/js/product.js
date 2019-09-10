@@ -11,21 +11,19 @@ var appuser = {
 		user.handleInfoData();
 		user.handleDeleteData();
 		user.handleApproveData();
-		user.handleSetCashier();
-		user.handleSetRegular();
 		user.handleDeclineData();
     },
 };
 
 var user = {
 	handleTable : function(filter){
-		var table = $('#dataTable').DataTable({
+		var table = $('#dataTableProduct').DataTable({
 			processing: true,
 			serverSide: true,
 			destroy: true,
 			// ajax: '/roles/data',
 			ajax: {
-                url: baseURL+"/user/data?filter="+filter,
+                url: baseURL+"/product/data?filter="+filter,
                 method: 'GET',
             },
 			columns: [
@@ -40,18 +38,28 @@ var user = {
 						return meta.row + meta.settings._iDisplayStart + 1;
 					}
 				},
-				{ data: 'name', name: 'name' },
-				{ data: 'email', name: 'email' },
-				{ data: null, name: 'level',render:function(data){
-					if(data.level == 2){
-						var level = '<b class="">CUSTOMER</b>';
-					}else if(data.level == 3){
-						var level = '<b class="">CASHIER</b>'
-					}else if(data.level == 1){
-						var level = '<b class="">SUPERADMIN</b>'
-					}return level;
+                { data: 'product_name', name: 'name' },
+                { data: null, name: 'type',render:function(data){
+					if(data.product_type == "regular"){
+						var type = '<b class="">Regular</b>';
+					}else if(data.product_type == "bidding"){
+						var type = '<b class="">Bidding</b>'
+					}return type;
 					}
-				},
+                },
+                { data: null, name: 'category',render:function(data){
+					if(data.categories_id == 1){
+						var category = '<b class="">Makanan</b>';
+					}else if(data.categories_id == 2){
+						var category = '<b class="">Minuman</b>'
+					}else if(data.categories_id == 3){
+						var category = '<b class="">Aksesoris</b>'
+					}return category;
+					}
+                },
+                { data: 'base_price', name: 'base_price' },
+                { data: 'final_price', name: 'final_price' },
+                { data: 'stock', name: 'stock' },
                 { data: null, name: 'status',render:function(data){
 					if(data.deleted_at != null){
 						return status = '<b class="text-danger">TRASHED</b>'
@@ -69,47 +77,31 @@ var user = {
 					className: "text-center",
 					searchable: false,
 					render: function(data, type, row){
-						if(data.level == 2){
-							var subbutton = "<a data-toggle='modal' data-target='#cashierModal'><button type='button' data-url='"+baseURL+"/user/setCashier/"+data.id+"' class='btn dotip btn-primary btn-outline btn-circle m-r-5 btn-set-cashier' data-toggle='tooltip' title='Set As Cashier'>"
-							+"<i class='ti-money'></i>"
-						+"</button>";
-						}else if(data.level == 3){
-							$('#role').val('Regular User');
-							$('#user').val(data.name);
-							var subbutton = "<a data-toggle='modal' data-target='#cashierModal'><button type='button' data-url='"+baseURL+"/user/setRegular/"+data.id+"' class='btn dotip btn-secondary btn-outline btn-circle m-r-5 btn-set-regular' data-toggle='tooltip' title='Set As Regular User'>"
-							+"<i class='ti-shopping-cart'></i>"
-							+"</button>";
-						}else {
-							var subbutton = "<a ><button type='button'  class='btn dotip btn-light btn-outline btn-circle m-r-5 btn-activate-data' data-toggle='tooltip' disabled title='Super Admin'>"
-							+"<i class='ti-user'></i>"
-							+"</button>";
-						}
+						
 						if(data.is_verified == 0){
-						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit User'>"
+						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit Product'>"
 										+"<i class='ti-pencil-alt'></i>"
 									+"</button>"
-									+subbutton
-									+"<a data-toggle='modal' data-target='#approveModal'><button type='button' data-url='"+baseURL+"/user/approve/"+data.id+"' class='btn dotip btn-info btn-outline btn-circle m-r-5 btn-activate-data' data-toggle='tooltip' title='Approve User'>"
+									+"<a data-toggle='modal' data-target='#approveModal'><button type='button' data-url='"+baseURL+"/product/approve/"+data.id+"' class='btn dotip btn-info btn-outline btn-circle m-r-5 btn-activate-data' data-toggle='tooltip' title='Approve Product'>"
 										+"<i class='ti-check'></i>"
 									+"</button>"
 									// +"<button type='button' data-id='"+data.id+"' class='btn btn-info btn-outline btn-circle btn-sm m-r-5 btn-show-permission' data-toggle='tooltip' title='Show Permission'>"
 									//	+"<i class='fa fa-certificate'></i>"
 									// +"</button>"
-									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/user/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete User'>"
+									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/product/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete Product'>"
 										+"<i class='ti-trash'></i>"
 									+"</button></a>";
 						} else {
-						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit User'>"
+						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit Product'>"
 										+"<i class='ti-pencil-alt'></i>"
 									+"</button>"
-									+subbutton
-									+"<a data-toggle='modal' data-target='#declineModal'><button type='button' data-url='"+baseURL+"/user/decline/"+data.id+"' class='btn dotip btn-warning btn-outline btn-circle m-r-5 btn-decline-data' data-toggle='tooltip' title='Deactivate User'>"
+									+"<a data-toggle='modal' data-target='#declineModal'><button type='button' data-url='"+baseURL+"/product/decline/"+data.id+"' class='btn dotip btn-warning btn-outline btn-circle m-r-5 btn-decline-data' data-toggle='tooltip' title='Deactivate Product'>"
 										+"<i class='ti-close'></i>"
 									+"</button>"
 									// +"<button type='button' data-id='"+data.id+"' class='btn btn-info btn-outline btn-circle btn-sm m-r-5 btn-show-permission' data-toggle='tooltip' title='Show Permission'>"
 									//	+"<i class='fa fa-certificate'></i>"
 									// +"</button>"
-									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/user/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete User'>"
+									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/product/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete Product'>"
 										+"<i class='ti-trash'></i>"
 									+"</button></a>";
 						}
@@ -170,20 +162,20 @@ var user = {
 			var form = $(".dataForm");
 
 			modal.modal("show");
-			modal.find(".modal-title").text("Create User");
+			modal.find(".modal-title").text("Insert Product");
 			form.find("#method").val("store");
 			form.find("#id").val("");
 		})
 	},
 
 	handlePostData : function(){
-		$('#dataForm').validator(['validate']).on('submit', function (e) {
+		$('.dataForm').validator(['validate']).on('submit', function (e) {
 			if (!e.isDefaultPrevented()) {
 				var data = $(this).serialize();
 				if($(this).find("#id").val() == "" && $(this).find("#method").val() === "store"){
-					var url = baseURL+"/user/store";
+					var url = baseURL+"/product/store";
 				} else if($(this).find("#id").val() != "" && $(this).find("#method").val() === "update"){
-					var url = baseURL+"/user/update/"+$(this).find("#id").val();
+					var url = baseURL+"/product/update/"+$(this).find("#id").val();
 				}
 				user.handleStoreData(url, data);
 				return false;
@@ -220,10 +212,10 @@ var user = {
 	},
 
 	handleEditData : function(){
-		$("#dataTable tbody").on("click", ".btn-edt-data",function(){
+		$("#dataTableProduct tbody").on("click", ".btn-edt-data",function(){
             console.log('clicked edit');
 			$.ajax({
-				url: baseURL+"/user/edit/"+$(this).attr("data-id"),
+				url: baseURL+"/product/edit/"+$(this).attr("data-id"),
 				type: "GET",
 				dataType: "JSON",
 				success : function(data){
@@ -234,17 +226,19 @@ var user = {
 	},
 
 	handleShowEditForm : function(data){
-		var modal = $("#dataEditModal");
-        var form = $("#dataEditForm");
+		var modal = $("#dataModal");
+        var form = $("#dataForm");
         var about = $('#about');
 
 		modal.modal("show");
 		modal.find(".modal-title").text("Edit Data User");
 
-		form.find("#id").val(data.id);
-		form.find("#name").val(data.name);
-		form.find("#email").val(data.email);
-		form.find("#password").val(data.password);
+		form.find("#name").val(data.product_name);
+		form.find("#type").val(data.product_type);
+		form.find("#category").val(data.categories_id);
+		form.find("#base").val(data.base_price);
+		form.find("#final").val(data.final_price);
+		form.find("#stock").val(data.stock);
 
         // about.html(data.about);
 		form.find("#method").val("update");
@@ -254,7 +248,7 @@ var user = {
 		$('#bulk-title').html(data);
 		$('#btn-bulk').on('click',function(){
 			$.ajax({
-				url: baseURL+'/user/bulk/'+data+'?id='+bulkdata,
+				url: baseURL+'/product/bulk/'+data+'?id='+bulkdata,
 				type: 'GET',
 				dataType: 'JSON',
 				success: function(data){
@@ -268,7 +262,7 @@ var user = {
 	},
 
 	handleDeleteData : function(){
-		$("#dataTable tbody").on("click", ".btn-delete-data", function(){
+		$("#dataTableProduct tbody").on("click", ".btn-delete-data", function(){
 			url = $(this).attr('data-url');
 		});
 
@@ -287,7 +281,7 @@ var user = {
 	},
 
 	handleApproveData : function(){
-		$("#dataTable tbody").on("click", ".btn-activate-data", function(){
+		$("#dataTableProduct tbody").on("click", ".btn-activate-data", function(){
 			url = $(this).attr('data-url');
 		});
 
@@ -305,49 +299,8 @@ var user = {
 		});
 	},
 
-	handleSetCashier : function(){
-		$("#dataTable tbody").on("click", ".btn-set-cashier", function(){
-			url = $(this).attr('data-url');
-
-			$("#roleUser").text("Cashier");
-		});
-
-		$('#btn-cashier').on('click',function(){
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(data){
-					$('#cashierModal').modal('hide');
-					notification._toast('Success', 'Success Change Level', 'success');
-					user.handleTable();
-				}
-			});
-		});
-	},
-
-	handleSetRegular : function(){
-		$("#dataTable tbody").on("click", ".btn-set-regular", function(){
-			url = $(this).attr('data-url');
-			$("#roleUser").text("Regular User");
-		});
-
-		$('#btn-regular').on('click',function(){
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(data){
-					$('#regularModal').modal('hide');
-					notification._toast('Success', 'Success Change Level', 'success');
-					user.handleTable();
-				}
-			});
-		});
-	},
-
 	handleDeclineData : function(){
-		$("#dataTable tbody").on("click", ".btn-decline-data", function(){
+		$("#dataTableProduct tbody").on("click", ".btn-decline-data", function(){
 			url = $(this).attr('data-url');
 		});
 
@@ -367,7 +320,7 @@ var user = {
 
 	handleInfoData : function(){
 		$.ajax({
-			url: baseURL+"/user/info",
+			url: baseURL+"/product/info",
 			type: 'GET',
 			dataType: 'JSON',
 			success: function(data){
