@@ -10,21 +10,18 @@ var appuser = {
 		user.handleEditData();
 		user.handleInfoData();
 		user.handleDeleteData();
-		user.handleApproveData();
-		user.handleDeclineData();
-		user.handleBidding();
     },
 };
 
 var user = {
 	handleTable : function(filter){
-		var table = $('#dataTableProduct').DataTable({
+		var table = $('#dataTableCategory').DataTable({
 			processing: true,
 			serverSide: true,
 			destroy: true,
 			// ajax: '/roles/data',
 			ajax: {
-                url: baseURL+"/product/data?filter="+filter,
+                url: baseURL+"/category/data?filter="+filter,
                 method: 'GET',
             },
 			columns: [
@@ -39,70 +36,31 @@ var user = {
 						return meta.row + meta.settings._iDisplayStart + 1;
 					}
 				},
-                { data: 'product_name', name: 'name' },
-                { data: null, name: 'type',render:function(data){
-					if(data.product_type == "regular"){
-						var type = '<b class="">Regular</b>';
-					}else if(data.product_type == "bidding"){
-						var type = '<b class="">Bidding</b>'
-					}return type;
-					}
-                },
-                { data: null, name: 'category',render:function(data){
-					if(data.categories_id == 1){
-						var category = '<b class="">Makanan</b>';
-					}else if(data.categories_id == 2){
-						var category = '<b class="">Minuman</b>'
-					}else if(data.categories_id == 3){
-						var category = '<b class="">Aksesoris</b>'
-					}return category;
-					}
-                },
-                { data: 'base_price', name: 'base_price' },
-                { data: 'final_price', name: 'final_price' },
-                { data: 'stock', name: 'stock' },
-                { data: null, name: 'status',render:function(data){
-					if(data.deleted_at != null){
-						return status = '<b class="text-danger">TRASHED</b>'
-					}
-					if(data.is_verified == 1){
-						var status = '<b class="text-success">ACTIVE</b>';
-					}else{
-						var status = '<b class="text-danger">DEACTIVE</b>'
-					}return status;
-					}
-				},
+				{ data: 'name', name: 'name' },
 				{
 					data: null,
 					orderable: false,
 					className: "text-center",
 					searchable: false,
 					render: function(data, type, row){
-						
-						if(data.is_verified == 0){
-						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit Product'>"
+						if(data.deleted_at != null){
+						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit Category'>"
 										+"<i class='ti-pencil-alt'></i>"
-									+"</button>"
-									+"<a data-toggle='modal' data-target='#approveModal'><button type='button' data-url='"+baseURL+"/product/approve/"+data.id+"' class='btn dotip btn-info btn-outline btn-circle m-r-5 btn-activate-data' data-toggle='tooltip' title='Approve Product'>"
-										+"<i class='ti-check'></i>"
 									+"</button>"
 									// +"<button type='button' data-id='"+data.id+"' class='btn btn-info btn-outline btn-circle btn-sm m-r-5 btn-show-permission' data-toggle='tooltip' title='Show Permission'>"
 									//	+"<i class='fa fa-certificate'></i>"
 									// +"</button>"
-									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/product/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete Product'>"
+									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/category/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' id='btn-delete-data' data-toggle='tooltip' title='Delete User'>"
 										+"<i class='ti-trash'></i>"
 									+"</button></a>";
 						} else {
-						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit Product'>"
+						var button = "<button type='button' data-id='"+data.id+"' class='btn dotip btn-success btn-outline btn-circle m-r-5 btn-edt-data' data-toggle='tooltip' title='Edit Category'>"
 										+"<i class='ti-pencil-alt'></i>"
-									+"</button>"
-									+"<a data-toggle='modal' data-target='#declineModal'><button type='button' data-url='"+baseURL+"/product/decline/"+data.id+"' class='btn dotip btn-warning btn-outline btn-circle m-r-5 btn-decline-data' data-toggle='tooltip' title='Deactivate Product'>"
-										+"<i class='ti-close'></i>"
 									+"</button>"
 									// +"<button type='button' data-id='"+data.id+"' class='btn btn-info btn-outline btn-circle btn-sm m-r-5 btn-show-permission' data-toggle='tooltip' title='Show Permission'>"
 									//	+"<i class='fa fa-certificate'></i>"
 									// +"</button>"
-									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/product/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' data-toggle='tooltip' title='Delete Product'>"
+									+"<a data-toggle='modal' data-target='#deleteModal'><button type='button' data-url='"+baseURL+"/category/destroy/"+data.id+"' class='btn dotip btn-danger btn-outline btn-circle m-r-5 btn-delete-data' id='btn-delete-data' data-toggle='tooltip' title='Delete User'>"
 										+"<i class='ti-trash'></i>"
 									+"</button></a>";
 						}
@@ -163,21 +121,20 @@ var user = {
 			var form = $(".dataForm");
 
 			modal.modal("show");
-			modal.find(".modal-title").text("Insert Product");
+			modal.find(".modal-title").text("Create User");
 			form.find("#method").val("store");
 			form.find("#id").val("");
-			user.handleBidding();
 		})
 	},
 
 	handlePostData : function(){
-		$('.dataForm').validator(['validate']).on('submit', function (e) {
+		$('#dataForm').validator(['validate']).on('submit', function (e) {
 			if (!e.isDefaultPrevented()) {
 				var data = $(this).serialize();
 				if($(this).find("#id").val() == "" && $(this).find("#method").val() === "store"){
-					var url = baseURL+"/product/store";
+					var url = baseURL+"/category/store";
 				} else if($(this).find("#id").val() != "" && $(this).find("#method").val() === "update"){
-					var url = baseURL+"/product/update/"+$(this).find("#id").val();
+					var url = baseURL+"/category/update/"+$(this).find("#id").val();
 				}
 				user.handleStoreData(url, data);
 				return false;
@@ -214,10 +171,10 @@ var user = {
 	},
 
 	handleEditData : function(){
-		$("#dataTableProduct tbody").on("click", ".btn-edt-data",function(){
+		$("#dataTableCategory tbody").on("click", ".btn-edt-data",function(){
             console.log('clicked edit');
 			$.ajax({
-				url: baseURL+"/product/edit/"+$(this).attr("data-id"),
+				url: baseURL+"/category/edit/"+$(this).attr("data-id"),
 				type: "GET",
 				dataType: "JSON",
 				success : function(data){
@@ -233,14 +190,10 @@ var user = {
         var about = $('#about');
 
 		modal.modal("show");
-		modal.find(".modal-title").text("Edit Data User");
+		modal.find(".modal-title").text("Edit Data Category");
 
-		form.find("#name").val(data.product_name);
-		form.find("#type").val(data.product_type);
-		form.find("#category").val(data.categories_id);
-		form.find("#base").val(data.base_price);
-		form.find("#final").val(data.final_price);
-		form.find("#stock").val(data.stock);
+		form.find("#id").val(data.id);
+		form.find("#name").val(data.name);
 
         // about.html(data.about);
 		form.find("#method").val("update");
@@ -250,12 +203,12 @@ var user = {
 		$('#bulk-title').html(data);
 		$('#btn-bulk').on('click',function(){
 			$.ajax({
-				url: baseURL+'/product/bulk/'+data+'?id='+bulkdata,
+				url: baseURL+'/category/bulk/'+data+'?id='+bulkdata,
 				type: 'GET',
 				dataType: 'JSON',
 				success: function(data){
 					$('#bulkModal').modal('hide');
-					notification._toast('Success', 'Success Edit Data', 'success');
+					notification._toast('Success', 'Success Edit Category', 'success');
 					user.handleTable($('#filter').val());
 				}
 			});
@@ -264,7 +217,7 @@ var user = {
 	},
 
 	handleDeleteData : function(){
-		$("#dataTableProduct tbody").on("click", ".btn-delete-data", function(){
+		$("#dataTableCategory tbody").on("click", ".btn-delete-data", function(){
 			url = $(this).attr('data-url');
 		});
 
@@ -275,45 +228,7 @@ var user = {
 				dataType: 'JSON',
 				success: function(data){
 					$('#deleteModal').modal('hide');
-					notification._toast('Success', 'Success Delete Data', 'success');
-					user.handleTable();
-				}
-			});
-		});
-	},
-
-	handleApproveData : function(){
-		$("#dataTableProduct tbody").on("click", ".btn-activate-data", function(){
-			url = $(this).attr('data-url');
-		});
-
-		$('#btn-approve').on('click',function(){
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(data){
-					$('#approveModal').modal('hide');
-					notification._toast('Success', 'Success Approve Data', 'success');
-					user.handleTable();
-				}
-			});
-		});
-	},
-
-	handleDeclineData : function(){
-		$("#dataTableProduct tbody").on("click", ".btn-decline-data", function(){
-			url = $(this).attr('data-url');
-		});
-
-		$('#btn-decline').on('click',function(){
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(data){
-					$('#declineModal').modal('hide');
-					notification._toast('Success', 'User Deactivated', 'success');
+					notification._toast('Success', 'Success Delete Category', 'success');
 					user.handleTable();
 				}
 			});
@@ -322,26 +237,13 @@ var user = {
 
 	handleInfoData : function(){
 		$.ajax({
-			url: baseURL+"/product/info",
+			url: baseURL+"/category/info",
 			type: 'GET',
 			dataType: 'JSON',
 			success: function(data){
 				$('#total').html(data.total);
-				$('#active').html(data.active);
-				$('#deactive').html(data.deactive);
 				$('#trashed').html(data.trashed);
 			}
-		});
-	},
-
-	handleBidding : function(){
-		$("select.type").change(function(){
-				if(this.value == 'bidding'){
-					var bidding = $('#dataModalBidding').children().html();
-					$('#bidding').html(bidding);
-				}else{
-					$('#bidding').html('');
-				}
 		});
 	}
 };

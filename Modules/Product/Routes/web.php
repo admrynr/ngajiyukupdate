@@ -22,4 +22,5 @@ Route::prefix('product')->group(function() {
     Route::get('decline/{id}', 'ProductController@decline')->name('product.decline');
     Route::put('update/{id}', 'ProductController@update')->name('product.update');
     Route::get('destroy/{id}', 'ProductController@destroy')->name('product.destroy');
+    Route::get('category', 'ProductController@category')->name('product.category');
 });

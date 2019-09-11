@@ -32,16 +32,8 @@
     </div>
 </div>
 
-<div class="modal fade dataEditModal" id="dataEditModal" tabindex="-1" role="dialog" aria-labelledby="addOrder" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title mt-0"></h5> 
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                </div>
-                @yield('data-edit-content')
-            </div>
-        </div>
+<div class="modal fade dataModalBidding" id="dataModalBidding" tabindex="-1" role="dialog" aria-labelledby="addOrder" aria-hidden="true" style="display: none;">
+        @yield('data-bidding')
     </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="addOrder" aria-hidden="true" style="display: none;">

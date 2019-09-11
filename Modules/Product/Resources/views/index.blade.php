@@ -120,6 +120,9 @@
 @section('data-content')
     @include('product::form.product')
 @endsection
+@section('data-bidding')
+    @include('product::form.bidding')
+@endsection
 
 
 @section('script-bottom')

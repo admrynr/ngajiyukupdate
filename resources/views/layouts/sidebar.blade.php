@@ -21,10 +21,15 @@
                             </li>
                             <li class="menu-title">Product Management</li>
                             <li>
-                                    <a href="{{ route('product.index') }}" class="waves-effect">
-                                            <i class="mdi mdi-account-multiple"></i><span> Product </span>
+                                <a href="{{ route('product.index') }}" class="waves-effect">
+                                        <i class="mdi mdi-equal-box"></i><span> Product </span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href="{{ route('category.index') }}" class="waves-effect">
+                                            <i class="mdi mdi-equal"></i><span> Category </span>
                                     </a>
-                                    </li>
+                                </li>
                             @elseif(Auth::user()->level == 3)
                             <li>
                                 <a href="{{ route('cashier.index') }}" class="waves-effect">

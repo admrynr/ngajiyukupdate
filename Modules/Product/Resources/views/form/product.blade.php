@@ -4,23 +4,27 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="nama_client" class="control-label">Name :</label>
+                    <label for="nama" class="control-label">Name :</label>
                     <input type="text" name="name" id="name" class="form-control" required>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="type" class="control-label">Type :</label>
-                    <select class="form-control" name="type" id="type">
+                    <select class="form-control type" name="type" id="type">
+                            <option selected='selected' value="">Select Type</option>
                             <option value="regular">Regular</option>
                             <option value="bidding">Bidding</option>
                     </select> 
                 </div>
             </div>
+            <div class="col-md-12" id="bidding"></div>
             <div class="col-md-12">
                     <div class="form-group">
                         <label for="category" class="control-label">Category :</label>
                         <select class="form-control" name="category" id="category">
+                                <option selected='selected' value="">Select Category</option>
+                                <option value="0">Uncategorized</option>
                             @foreach ($categories as $c)
                                 <option value="{{$c->id}}">{{$c->name}}</option>
                             @endforeach
@@ -49,6 +53,8 @@
         
             <input type="hidden" id="method">
             <input type="hidden" id="id">
+            <input type="hidden" id="isbid">
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>

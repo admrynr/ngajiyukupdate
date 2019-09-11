@@ -39,10 +39,8 @@
                                 <h4 class="header-title">{{ $title }} List</h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <a href="{{ route('user.index') }}" class="btn {{ empty(Request::get('filter')) ? 'btn-primary' : 'btn-secondary' }} text-white">All (<span id="total"></span>)</a>
-                                <a href="{{ route('user.index') }}?filter=active"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'active' ? 'btn-primary' : 'btn-secondary' }} text-white">Active (<span id="active"></span>)</a>
-                                <a href="{{ route('user.index') }}?filter=deactive"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'deactive' ? 'btn-primary' : 'btn-secondary' }} text-white">Deactive (<span id="deactive"></span>)</a>
-                                <a href="{{ route('user.index') }}?filter=trashed"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'trashed' ? 'btn-primary' : 'btn-secondary' }} text-white">Trashed (<span id="trashed"></span>)</a>
+                                <a href="{{ route('category.index') }}" class="btn {{ empty(Request::get('filter')) ? 'btn-primary' : 'btn-secondary' }} text-white">All (<span id="total"></span>)</a>
+                                <a href="{{ route('category.index') }}?filter=trashed"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == 'trashed' ? 'btn-primary' : 'btn-secondary' }} text-white">Trashed (<span id="trashed"></span>)</a>
                                 <input type="hidden" id="filter" value="{{ empty(Request::get('filter')) ? 'all' : Request::get('filter') }}">
                             </div>
                             </div>
@@ -60,8 +58,6 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
                                     <a class="dropdown-item bulk-button" data-title="restore" href="#">Restore</a>
-                                    <a class="dropdown-item bulk-button" data-title="activate" href="#">Activate</a>
-                                    <a class="dropdown-item bulk-button" data-title="deactivate" href="#">Deactivate</a>
                                     <a class="dropdown-item bulk-button" data-title="trash" href="#">Delete</a>
                                     <a class="dropdown-item bulk-button" data-title="delete" href="#">Permantly Delete</a>
                                 </div>
@@ -90,16 +86,13 @@
                     @else
                         <input type="hidden" id="selectsekolah" value="{{ Session::get('user')->sekolah_id }}">
                     @endif --}}
-                    <table id="dataTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <table id="dataTableCategory" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
                             <th></th>
                             <th>No.</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Level</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,11 +108,12 @@
 </div> <!-- end container-fluid -->
 @endsection
 @section('data-content')
-    @include('user::form.user')
+    @include('category::form.category')
 @endsection
 
+
 @section('script-bottom')
-        <script type="text/javascript" src="{{ asset("js/user.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("js/category.js") }}"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 appuser.handleUserPage($('#filter').val());

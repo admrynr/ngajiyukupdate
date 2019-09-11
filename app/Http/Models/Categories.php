@@ -4,6 +4,7 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Models\Product;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Categories extends Model
 {
@@ -17,4 +18,7 @@ class Categories extends Model
     {
         return $this->hasMany(Product::class, 'categories_id', 'id');
     }
+
+    use SoftDeletes;
+
 }
