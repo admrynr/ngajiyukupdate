@@ -16,7 +16,7 @@ class Categories extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'categories_id', 'id');
+        return $this->hasMany(Product::class);
     }
 
     use SoftDeletes;

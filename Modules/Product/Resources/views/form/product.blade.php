@@ -1,4 +1,4 @@
-<form class="dataForm" method="POST" id="dataForm" action="#">
+<form class="dataForm" method="POST" id="dataForm" enctype="multipart/form-data" action="#">
     {{ csrf_field() }}
     <div class="modal-body">
         <div class="row">
@@ -24,12 +24,17 @@
                         <label for="category" class="control-label">Category :</label>
                         <select class="form-control" name="category" id="category">
                                 <option selected='selected' value="">Select Category</option>
-                                <option value="0">Uncategorized</option>
                             @foreach ($categories as $c)
                                 <option value="{{$c->id}}">{{$c->name}}</option>
                             @endforeach
                         </select> 
                     </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="img" class="control-label">Product Image :</label>
+                    <input type="file" name="img" id="img" class="form-control-file" required>
+                </div>
             </div>
             <div class="col-md-12">
                     <div class="form-group">

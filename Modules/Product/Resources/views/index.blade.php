@@ -49,6 +49,24 @@
                         </div>
                     </div>
             </div>
+            <div class="col-xl-12">
+                <div class="card m-b-20">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 text-left">
+                            <h4 class="header-title">Category-Based List</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a href="{{ route('product.index') }}" class="btn {{ empty(Request::get('filter')) ? 'btn-primary' : 'btn-secondary' }} text-white">All (<span id="total"></span>)</a>
+                            @foreach ($categories as $c)
+                            <a href="{{ route('product.index') }}?filter={{$c->name}}"  class="btn {{ !empty(Request::get('filter')) && Request::get('filter') == $c->name ? 'btn-primary' : 'btn-secondary' }} text-white">{{$c->name}} (<span id="{{$c->name}}"></span>)</a>
+                            @endforeach
+                            <input type="hidden" id="filter" value="{{ empty(Request::get('filter')) ? 'all' : Request::get('filter') }}">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
         <div class="col-xl-12">
             <div class="card m-b-20">
                 <div class="card-body">
@@ -98,6 +116,7 @@
                             <th>Name</th>
                             <th>Type</th>
                             <th>Category</th>
+                            <th>Image</th>
                             <th>Base Price</th>
                             <th>Final Price</th>
                             <th>Stock</th>

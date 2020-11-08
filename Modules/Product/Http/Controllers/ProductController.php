@@ -10,6 +10,7 @@ use App\Helpers\Guzzle;
 use Yajra\Datatables\Datatables;
 use App\Http\Models\Product;
 use App\Http\Models\Categories;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -22,7 +23,8 @@ class ProductController extends Controller
         $title = 'Product Management';
 
         $category = Categories::all();
-        
+
+
         return view('product::index', ['categories' => $category])->withTitle($title);
     }
 
@@ -108,7 +110,6 @@ class ProductController extends Controller
     public function destroy($id, Request $request)
     {
         $product = Product::where('id', $id);
-        $product->delete();
 
         if(!$product->delete()){
             $data = [
@@ -134,6 +135,10 @@ class ProductController extends Controller
     {
         $product = new Product;
 
+        $image = $request->file('img');
+
+        $upload = Storage::disk('public')->put('images', $image);
+
         $product->product_name = $request->name;
         $product->product_type = $request->type;
         $product->categories_id = $request->category;
@@ -141,7 +146,7 @@ class ProductController extends Controller
         $product->final_price = $request->final;
         $product->stock = $request->stock;
         $product->is_verified = 0;
-        $product->image = 'default.jpg';
+        $product->image = $upload;
         $product->save();
 
         $data = [
@@ -155,14 +160,22 @@ class ProductController extends Controller
 
     public function data(Request $request)
     {
+        $categories = Categories::all();
         if ($request->filter == 'all')
         $product = Product::with('categories')->get();
         else if($request->filter == 'active')
         $product = Product::where('is_verified',1)->get();
         else if($request->filter == 'deactive')
         $product = Product::where('is_verified',0)->get();
-        else
+        else if($request->filter == 'trashed')
         $product = Product::onlyTrashed()->get();
+        else {
+            foreach($categories as $c){
+                if($request->filter == $c->name){
+                    $product = Product::with('categories')->where('categories_id',$c->id)->get();
+                }
+            }
+        }
 
         return datatables::of($product)->make(true);
     }
@@ -196,18 +209,24 @@ class ProductController extends Controller
     public function info(Request $request)
     {
         $model = Product::all();
+        $category = Categories::all();
 
         $active = Product::where('is_verified',1)->count();
         $deactive = Product::where('is_verified',0)->count();;
         $total = $model->count();
         $trashed = Product::onlyTrashed()->count();
+        
 
         $info = [
             'total' => $total,
             'active' => $active,
             'deactive' => $deactive,
-            'trashed' => $trashed
+            'trashed' => $trashed,
         ];
+
+    foreach($category as $c){
+        $info[$c->name] = Product::with('categories')->where('categories_id',$c->id)->count();
+    }
 
         return json_encode($info);
     }

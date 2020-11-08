@@ -49,15 +49,18 @@ var user = {
 					}
                 },
                 { data: null, name: 'category',render:function(data){
-					if(data.categories_id == 1){
-						var category = '<b class="">Makanan</b>';
-					}else if(data.categories_id == 2){
-						var category = '<b class="">Minuman</b>'
-					}else if(data.categories_id == 3){
-						var category = '<b class="">Aksesoris</b>'
-					}return category;
+					if (data.categories == null)
+					{
+						var uncategorized = "Uncategorized";
+						return uncategorized;
+					}else{
+						return data.categories.name;
 					}
-                },
+				}},
+				{ data: null, name: 'image', render:function(data){
+					return '<td><image width="75px" class="rounded mx-auto d-block"' 
+					+'src="'+baseURL+'/public/storage/images/'+data.image+'"></td>';
+				}},
                 { data: 'base_price', name: 'base_price' },
                 { data: 'final_price', name: 'final_price' },
                 { data: 'stock', name: 'stock' },
@@ -197,7 +200,7 @@ var user = {
 				if(data.status == 1){
 					notification._toast('Success', 'Success Update Data', 'success');
 					$("#dataModal").modal("hide");
-					user.handleTable();
+					user.handleTable($('#filter').val());
 				}else{
 					notification._toast('Error', data.message, 'error');
 				}
@@ -241,6 +244,7 @@ var user = {
 		form.find("#base").val(data.base_price);
 		form.find("#final").val(data.final_price);
 		form.find("#stock").val(data.stock);
+		form.find("#id").val(data.id);
 
         // about.html(data.about);
 		form.find("#method").val("update");
@@ -276,7 +280,7 @@ var user = {
 				success: function(data){
 					$('#deleteModal').modal('hide');
 					notification._toast('Success', 'Success Delete Data', 'success');
-					user.handleTable();
+					user.handleTable($('#filter').val());
 				}
 			});
 		});
@@ -295,7 +299,7 @@ var user = {
 				success: function(data){
 					$('#approveModal').modal('hide');
 					notification._toast('Success', 'Success Approve Data', 'success');
-					user.handleTable();
+					user.handleTable($('#filter').val());
 				}
 			});
 		});
@@ -314,7 +318,7 @@ var user = {
 				success: function(data){
 					$('#declineModal').modal('hide');
 					notification._toast('Success', 'User Deactivated', 'success');
-					user.handleTable();
+					user.handleTable($('#filter').val());
 				}
 			});
 		});
@@ -326,11 +330,10 @@ var user = {
 			type: 'GET',
 			dataType: 'JSON',
 			success: function(data){
-				$('#total').html(data.total);
-				$('#active').html(data.active);
-				$('#deactive').html(data.deactive);
-				$('#trashed').html(data.trashed);
-			}
+				for (x in data){
+					($('#'+x).html(data[x]));
+				}
+				}
 		});
 	},
 

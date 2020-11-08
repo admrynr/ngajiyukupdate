@@ -154,7 +154,7 @@ var user = {
 				if(data.status == 1){
 					notification._toast('Success', 'Success Update Data', 'success');
 					$("#dataModal").modal("hide");
-					user.handleTable();
+					user.handleTable($('#filter').val());
 				}else{
 					notification._toast('Error', data.message, 'error');
 				}
@@ -229,7 +229,7 @@ var user = {
 				success: function(data){
 					$('#deleteModal').modal('hide');
 					notification._toast('Success', 'Success Delete Category', 'success');
-					user.handleTable();
+					user.handleTable($('#filter').val());
 				}
 			});
 		});

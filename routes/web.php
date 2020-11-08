@@ -11,7 +11,32 @@
 |
 */
 
-Route::get('/', '\Modules\User\Http\Controllers\UserController@index')->name('home')->middleware('auth');
+Route::get('/', function () {
+    return view('index');
+
+});
+
+Route::get('/login', function (){
+    return view('login');
+});
+
+Route::get('/blog', function (){
+    return view('blog');
+});
+
+Route::get('/blog', function (){
+    return view('blog');
+});
+
+Route::get('/video', function (){
+    return view('video');
+});
+
+Route::get('/livestream', function (){
+    return view('livestream');
+});
+
+Route::get('/admin', '\Modules\User\Http\Controllers\UserController@index')->name('home')->middleware('auth');
 Route::get('/index', 'HomeController@index')->name('index');
 
 Route::get('main', 'DefaultController@index');
@@ -31,6 +56,7 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::post('/logout', 'LoginController@logout')->name('logout');
 
 Route::get('/unverified', 'LoginController@unverify')->name('unverified');
+Route::get('/wrong', 'LoginController@wrong')->name('wrong');
 Route::get('/login/regsuccess', 'LoginController@regsuccess')->name('regsuccess');
 Route::get('/login', 'LoginController@showLoginForm')->name('login');
 Route::post('/login/authenticate', 'loginController@authenticate')->name('authenticate');

@@ -45,22 +45,34 @@ class LoginController extends Controller
             'password' => ['required', 'string', 'min:8'],
         ]);
 
-        if (Auth::attempt(['email'=>$data['email'], 'password'=>$data['password'], 'is_verified'=>'1'])) {
+        if (Auth::attempt(['email'=>$data['email'], 'password'=>$data['password']])) {
             // Authentication passed...
-            if (Auth::user()->level==1){
-            return redirect()->route('user.index');
-            }else if (Auth::user()->level==3){
-                return redirect()->route('cashier.index');
+            if(Auth::user()->is_verified==1){
+                if (Auth::user()->level==1){
+                return redirect()->route('user.index');
+                }else if (Auth::user()->level==3){
+                    return redirect()->route('cashier.index');
+                }
+            }else{
+                return redirect('/unverified');
             }
         }else{
-            return redirect('/unverified');
+            return redirect('/wrong');
         }
         
     }
 
+    //user unverified
     public function unverify()
     {
         Session::flash('message', 'Wait until your account is verified before you can login.');
+            return view('Auth.login'); 
+    }
+
+    //wrong authentication
+    public function wrong()
+    {
+        Session::flash('message', 'Username or password is incorrect');
             return view('Auth.login'); 
     }
 

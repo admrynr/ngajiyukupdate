@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Http\Models\Categories;
+use App\Http\Models\Product;
 use App\Helpers\Guzzle;
 use Yajra\Datatables\Datatables;
 
@@ -28,7 +29,7 @@ class CategoryController extends Controller
     public function data(Request $request )
     {
         if ($request->filter == 'all')
-        $category = Categories::with('products')->get();
+        $category = Categories::all();
         else
         $category = Categories::onlyTrashed()->get();
 
@@ -157,10 +158,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $product = Categories::where('id', $id);
-        $product->delete();
+        $categories = Categories::where('id', $id);
 
-        if(!$product->delete()){
+        Product::has('categories')->where('categories_id', $id)->update(['categories_id' => 0]);
+        
+        if(!$categories->delete()){
             $data = [
                 'status' => 2,
                 'message' => 'Fail Update Data'
